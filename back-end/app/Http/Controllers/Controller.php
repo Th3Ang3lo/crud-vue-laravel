@@ -39,7 +39,7 @@ class Controller extends BaseController
         $errors['message'] = $message;
 
         if ($exception instanceof BadRequestException) {
-            $errors['fields'] = $exception->fields;
+            $errors['field'] = $exception->field;
         }
 
         return new Response($errors, $exception->statusCode ?? 500);
