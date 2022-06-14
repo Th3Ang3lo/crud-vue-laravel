@@ -25,4 +25,9 @@ class UsersRepository
     {
         return User::where('id', $id)->delete();
     }
+
+    public static function find()
+    {
+        return User::all();
+    }
 }
