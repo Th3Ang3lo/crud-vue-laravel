@@ -14,8 +14,8 @@ class DeleteUserController extends Controller
     public function handle(Request $request, Response $response, string $id): \Illuminate\Http\Response
     {
         try {
-            $updateUserService = new DeleteUserService();
-            $data = $updateUserService->execute($id);
+            $deleteUserService = new DeleteUserService();
+            $data = $deleteUserService->execute($id);
 
             return $this->ok($data);
         } catch (\Exception $exception) {
