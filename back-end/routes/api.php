@@ -15,5 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\Users\CreateUserController as AdminCreateUserController;
 
 Route::post('/admin/auth', [AdminAuthController::class, 'handle']);
+Route::middleware('jwt.admin')->post('/admin/user', [AdminCreateUserController::class, 'handle']);
