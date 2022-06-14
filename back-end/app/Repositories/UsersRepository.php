@@ -15,4 +15,9 @@ class UsersRepository
     {
         return User::where('email', $email)->first();
     }
+
+    public static function update(string $id, array $data)
+    {
+        return User::where('id', $id)->update($data);
+    }
 }
