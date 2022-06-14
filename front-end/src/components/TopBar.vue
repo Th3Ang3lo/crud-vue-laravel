@@ -43,7 +43,8 @@
         <li class="nav-item">
           <a
             class="nav-link text-danger"
-            href="#"
+            href="/logout"
+            @click="onLogout"
           >Sair</a>
         </li>
       </ul>
@@ -59,11 +60,17 @@ export default {
   data(){
     return {
       dashboard: router.HOME.path,
-      tasks: router.TASKS.path
+      tasks: router.TASKS.path,
+      login: router.LOGIN.path
     }
   },
   methods: {
+    onLogout(event){
+      event.preventDefault()
+      this.$cookies.remove('token')
 
+      this.$router.push(this.login)
+    }
   },
 }
 </script>
