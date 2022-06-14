@@ -20,4 +20,9 @@ class UsersRepository
     {
         return User::where('id', $id)->update($data);
     }
+
+    public static function delete(string $id)
+    {
+        return User::where('id', $id)->delete();
+    }
 }
