@@ -5,6 +5,13 @@
     <div class="p-3">
       <h1>Alterar tarefa</h1>
 
+      <p
+        v-if="success"
+        class="alert alert-success"
+      >
+        Usuário alterado com sucesso!
+      </p>
+
       <div>
         <b-form
           class="px-4"
@@ -19,6 +26,12 @@
               v-model="task"
               trim
             />
+            <p
+              v-if="errors['task']"
+              class="text-danger"
+            >
+              {{ errors['task'] }}
+            </p>
           </b-form-group>
 
           <b-form-group
@@ -27,14 +40,28 @@
           >
             <b-form-select
               id="status"
-              v-model="selected"
+              v-model="status"
               :options="options"
             />
+            <p
+              v-if="errors['status']"
+              class="text-danger"
+            >
+              {{ errors['status'] }}
+            </p>
           </b-form-group>
+
+          <p
+            v-if="errors['message']"
+            class="text-danger"
+          >
+            {{ errors['message'] }}
+          </p>
 
           <b-button
             variant="primary"
-            :disabled="submited"
+            :disabled="sending"
+            type="submit"
           >
             Alterar
           </b-button>
@@ -48,6 +75,8 @@
 
 import TopBar from '@/components/TopBar.vue'
 
+import api from '@/services/api'
+
 export default {
   name: 'EditTaskPage',
   components: {
@@ -55,23 +84,62 @@ export default {
   },
   data(){
     return {
-      submited: false,
-      selected: 'pending',
+      taskId: this.$route.params.id,
       options: [
         { value: 'pending', text: 'Pendente' },
         { value: 'done', text: 'Concluída' }
-      ]
+      ],
+      task: null,
+      status: 'pending',
+
+      errors: {
+        task: null,
+        status: null,
+        message: null
+      },
+      sending: false,
+      success: false
     }
   },
+  mounted(){
+    api.get('/admin/task/' + this.taskId)
+      .then(response => {
+        const { data } = response.data
+
+        const { task, status } = data
+        this.task = task
+        this.status = status
+      })
+  },
   methods: {
-    handleSubmit(event){
+    async handleSubmit(event){
       event.preventDefault()
 
-      this.submited = true
+      this.sending = true
 
       const { task, status } = this
 
-      this.submited = false
+      try {
+        const response = await api.put('/admin/task/' + this.taskId,{ task, status })
+
+        this.success = true
+        this.errors = {
+          task: null,
+          status: null,
+          message: null
+        }
+
+      } catch (error) {
+        const { data, status } = error.response
+
+        if(status === 400) {
+          this.errors[data.field] = data.message
+        } else {
+          this.errors['message'] = data.message
+        }
+      } finally {
+        this.sending = false
+      }
     }
   }
 }
