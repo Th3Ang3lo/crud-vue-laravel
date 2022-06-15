@@ -8,7 +8,7 @@
 
         <b-button
           variant="success"
-          @click="$router.push(routes.CREATE_USER.path)"
+          @click="$router.push(routes.CREATE_TASK.path)"
         >
           Nova tarefa
         </b-button>

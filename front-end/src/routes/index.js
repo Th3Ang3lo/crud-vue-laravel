@@ -4,6 +4,7 @@ import EditUserPage from '@/pages/Users/EditUserPage.vue'
 import CreateUserPage from '@/pages/Users/CreateUserPage.vue'
 import ListTasksPage from '@/pages/Tasks/ListTasksPage.vue'
 import EditTaskPage from '@/pages/Tasks/EditTaskPage.vue'
+import CreateTaskPage from '@/pages/Tasks/CreateTaskPage'
 
 export default {
   HOME: {
@@ -18,6 +19,14 @@ export default {
     path: '/tasks',
     name: 'ListTasksPage',
     component: ListTasksPage,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  CREATE_TASK: {
+    path: '/tasks/new',
+    name: 'CreateTaskPage',
+    component: CreateTaskPage,
     meta: {
       requiresAuth: true
     }
