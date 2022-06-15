@@ -25,7 +25,7 @@
       <b-table
         striped
         hover
-        :items="items"
+        :items="users"
         :fields="fields"
       >
         <template #head(id)>
@@ -103,7 +103,7 @@ export default {
       routes,
 
       fields: ['id', 'name', 'email', 'created_at', 'action'],
-      items: [
+      users: [
         /*
         {
           id: 1,
@@ -122,7 +122,7 @@ export default {
     api.get('/admin/user/list')
       .then(response => {
         const { data } = response.data
-        this.items = data.map(user => {
+        this.users = data.map(user => {
           user.action = {
             id: user.id
           }
@@ -139,7 +139,11 @@ export default {
       this.userId = userId
     },
     async handleDeleteUser(userId) {
-      // TODO: implement delete user API
+      await api.delete('/admin/user/' + userId)
+
+      const index = this.users.map(item => item.id).indexOf(userId)
+
+      this.users.splice(index, 1)
     }
   }
 }
