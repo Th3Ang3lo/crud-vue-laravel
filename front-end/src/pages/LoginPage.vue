@@ -41,7 +41,7 @@
               v-if="errors['password']"
               class="text-danger"
             >
-              {{ errors['email'] }}
+              {{ errors['password'] }}
             </p>
           </b-form-group>
 
