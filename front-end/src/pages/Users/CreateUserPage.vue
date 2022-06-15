@@ -121,7 +121,7 @@ export default {
     async handleSubmit(event){
       event.preventDefault()
 
-      this.submited = true
+      this.sending = true
 
       const { name, email, password } = this
 
