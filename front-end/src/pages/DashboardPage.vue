@@ -88,6 +88,10 @@
 import TopBar from '@/components/TopBar.vue'
 import routes from '@/routes'
 
+import { onMounted } from 'vue'
+
+import api from '@/services/api'
+
 export default {
   name: 'DashboardPage',
   components: {
@@ -100,6 +104,7 @@ export default {
 
       fields: ['id', 'name', 'email', 'created_at', 'action'],
       items: [
+        /*
         {
           id: 1,
           name: 'User',
@@ -109,8 +114,25 @@ export default {
             id: 1
           }
         },
+        */
       ]
     }
+  },
+  mounted(){
+    api.get('/admin/user/list')
+      .then(response => {
+        const { data } = response.data
+        this.items = data.map(user => {
+          user.action = {
+            id: user.id
+          }
+
+          user.created_at = new Date(user.created_at).toLocaleString('pt-BR')
+
+          return user
+        })
+      })
+      .catch(error => {})
   },
   methods: {
     handleShowDeleteUserModal(userId) {
@@ -121,5 +143,6 @@ export default {
     }
   }
 }
+
 
 </script>
