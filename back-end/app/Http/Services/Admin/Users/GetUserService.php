@@ -16,7 +16,7 @@ class GetUserService
         if(!$user) throw new NotFoundException('Usuário inexistente.');
 
         return [
-            'user' => $user
+            'data' => $user
         ];
     }
 }
