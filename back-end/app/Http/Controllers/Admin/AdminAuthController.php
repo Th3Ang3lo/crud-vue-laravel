@@ -12,8 +12,8 @@ class AdminAuthController extends Controller
 {
     public function handle(Request $request, Response $response): Response
     {
-        $email = $request->get('email');
-        $password = $request->get('password');
+        $email = $request->get('email') ?? '';
+        $password = $request->get('password') ?? '';
 
         try {
             $adminAuthService = new AdminAuthService();

@@ -12,8 +12,8 @@ class CreateTaskController extends Controller
 {
     public function handle(Request $request, Response $response): Response
     {
-        $task = $request->get('task');
-        $status = $request->get('status');
+        $task = $request->get('task') ?? '';
+        $status = $request->get('status') ?? '';
 
         try {
             $createTaskService = new CreateTaskService();

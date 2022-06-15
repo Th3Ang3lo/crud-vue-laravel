@@ -14,7 +14,8 @@ class AdminAuthService
      * @throws BadRequestException
      * @throws UnauthorizedException
      */
-    #[ArrayShape(['user' => "\Illuminate\Contracts\Auth\Authenticatable|null", 'token' => "bool"])] public function execute(string $email, string $password): array
+    #[ArrayShape(['user' => "\Illuminate\Contracts\Auth\Authenticatable|null", 'token' => "bool"])]
+    public function execute(string $email, string $password): array
     {
         AuthValidator::validate($email, $password);
 

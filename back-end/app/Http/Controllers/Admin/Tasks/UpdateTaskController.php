@@ -13,8 +13,8 @@ class UpdateTaskController extends Controller
 {
     public function handle(Request $request, Response $response, $id): Response
     {
-        $task = $request->get('task');
-        $status = $request->get('status');
+        $task = $request->get('task') ?? '';
+        $status = $request->get('status') ?? '';
 
         try {
             $updateTaskService = new UpdateTaskService();
