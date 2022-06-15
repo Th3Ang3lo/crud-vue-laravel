@@ -15,17 +15,17 @@
       </div>
 
       <b-modal
-        id="modal-delete-user"
-        title="Apagar usuário"
-        @ok="handleDeleteUser(userId)"
+        id="modal-delete-task"
+        title="Apagar tarefa"
+        @ok="handleDeleteTask(taskId)"
       >
-        Tem certeza que deseja apagar este usuário? Esta ação não poderá ser desfeita.
+        Tem certeza que deseja apagar esta tarefa? Esta ação não poderá ser desfeita.
       </b-modal>
 
       <b-table
         striped
         hover
-        :items="items"
+        :items="tasks"
         :fields="fields"
       >
         <template #head(id)>
@@ -71,9 +71,9 @@
           &nbsp;
 
           <b-button
-            v-b-modal.modal-delete-user
+            v-b-modal.modal-delete-task
             variant="danger"
-            @click="handleShowDeleteUserModal(data.value.id)"
+            @click="handleShowDeleteTaskModal(data.value.id)"
           >
             &times;
           </b-button>
@@ -90,6 +90,8 @@ import routes from '@/routes'
 
 import TaskStatus from '@/components/TaskStatus'
 
+import api from '@/services/api'
+
 export default {
   name: 'ListTasksPage',
   components: {
@@ -98,11 +100,12 @@ export default {
   },
   data(){
     return {
-      userId: 0,
+      taskId: 0,
       routes,
 
       fields: ['id', 'task', 'conclused_at', 'status', 'action'],
-      items: [
+      tasks: [
+/*
         {
           id: 1,
           task: 'Ir as compras',
@@ -112,15 +115,32 @@ export default {
             id: 1
           }
         },
+*/
       ]
     }
   },
+  mounted(){
+    api.get('/admin/task/list')
+      .then(response => {
+        const { data } = response.data
+        this.tasks = data.map(task => {
+          task.action = {
+            id: task.id
+          }
+
+          task.conclused_at = task.conclused_at ? new Date(task.conclused_at).toLocaleString('pt-BR') : '-'
+
+          return task
+        })
+      })
+      .catch(error => {})
+  },
   methods: {
-    handleShowDeleteUserModal(userId) {
-      this.userId = userId
+    handleShowDeleteTaskModal(taskId) {
+      this.taskId = taskId
     },
-    async handleDeleteUser(userId) {
-      // TODO: implement delete user API
+    async handleDeleteTask(taskId) {
+      // TODO: implement delete task API
     }
   }
 }
