@@ -11,8 +11,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
-    //const token = $cookies.get('token')
-    const token = true
+    const token = $cookies.get('token')
 
     if (token) {
       next()
