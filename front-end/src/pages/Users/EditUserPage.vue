@@ -5,6 +5,13 @@
     <div class="p-3">
       <h1>Alterar o usuário</h1>
 
+      <p
+        v-if="success"
+        class="alert alert-success"
+      >
+        Usuário alterado com sucesso!
+      </p>
+
       <div>
         <b-form
           class="px-4"
@@ -31,6 +38,12 @@
               type="email"
               trim
             />
+            <p
+              v-if="errors['email']"
+              class="text-danger"
+            >
+              {{ errors['email'] }}
+            </p>
           </b-form-group>
 
           <b-form-group
@@ -43,11 +56,25 @@
               type="password"
               trim
             />
+            <p
+              v-if="errors['password']"
+              class="text-danger"
+            >
+              {{ errors['password'] }}
+            </p>
           </b-form-group>
+
+          <p
+            v-if="errors['message']"
+            class="text-danger"
+          >
+            {{ errors['message'] }}
+          </p>
 
           <b-button
             variant="primary"
-            :disabled="submited"
+            :disabled="sending"
+            type="submit"
           >
             Alterar
           </b-button>
@@ -61,6 +88,8 @@
 
 import TopBar from '@/components/TopBar.vue'
 
+import api from '@/services/api'
+
 export default {
   name: 'EditUserPage',
   components: {
@@ -68,18 +97,65 @@ export default {
   },
   data(){
     return {
-      submited: false
+      userId: this.$route.params.id,
+      name: null,
+      email: null,
+      password: null,
+
+      errors: {
+        name: null,
+        email: null,
+        password: null,
+        message: null
+      },
+      sending: false,
+      success: false
     }
   },
+  mounted(){
+    api.get('/admin/user/' + this.userId)
+      .then(response => {
+        const { data } = response.data
+
+        const { name, email } = data
+        this.name = name
+        this.email = email
+        this.password = null
+      })
+  },
   methods: {
-    handleSubmit(event){
+    async handleSubmit(event){
       event.preventDefault()
 
-      this.submited = true
+      this.sending = true
 
       const { name, email, password } = this
 
-      this.submited = false
+      try {
+        const response = await api.put('/admin/user/' + this.userId, { name, email, password })
+
+        // reset
+        this.password = null
+
+        this.success = true
+        this.errors = {
+          name: null,
+          email: null,
+          password: null,
+          message: null
+        }
+
+      } catch (error) {
+        const { data, status } = error.response
+
+        if(status === 400) {
+          this.errors[data.field] = data.message
+        } else {
+          this.errors['message'] = data.message
+        }
+      } finally {
+        this.sending = false
+      }
     }
   }
 }
