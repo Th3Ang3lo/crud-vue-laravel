@@ -140,7 +140,11 @@ export default {
       this.taskId = taskId
     },
     async handleDeleteTask(taskId) {
-      // TODO: implement delete task API
+     await api.delete('/admin/task/' + taskId)
+
+      const index = this.tasks.map(item => item.id).indexOf(taskId)
+
+      this.tasks.splice(index, 1)
     }
   }
 }
