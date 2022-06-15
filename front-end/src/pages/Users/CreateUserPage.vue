@@ -5,8 +5,16 @@
     <div class="p-3">
       <h1>Cadastrar novo usuário</h1>
 
+      <p
+        v-if="success"
+        class="alert alert-success"
+      >
+        Usuário cadastrado com sucesso!
+      </p>
+
       <div>
         <b-form
+          ref="formCreateUser"
           class="px-4"
           @submit="handleSubmit"
         >
@@ -19,6 +27,12 @@
               v-model="name"
               trim
             />
+            <p
+              v-if="errors['name']"
+              class="text-danger"
+            >
+              {{ errors['name'] }}
+            </p>
           </b-form-group>
 
           <b-form-group
@@ -31,6 +45,12 @@
               type="email"
               trim
             />
+            <p
+              v-if="errors['email']"
+              class="text-danger"
+            >
+              {{ errors['email'] }}
+            </p>
           </b-form-group>
 
           <b-form-group
@@ -43,11 +63,25 @@
               type="password"
               trim
             />
+            <p
+              v-if="errors['password']"
+              class="text-danger"
+            >
+              {{ errors['password'] }}
+            </p>
           </b-form-group>
+
+          <p
+            v-if="errors['message']"
+            class="text-danger"
+          >
+            {{ errors['message'] }}
+          </p>
 
           <b-button
             variant="primary"
-            :disabled="submited"
+            type="submit"
+            :disabled="sending"
           >
             Cadastrar
           </b-button>
@@ -61,6 +95,8 @@
 
 import TopBar from '@/components/TopBar.vue'
 
+import api from '@/services/api'
+
 export default {
   name: 'CreateUserPage',
   components: {
@@ -68,18 +104,54 @@ export default {
   },
   data(){
     return {
-      submited: false
+      name: null,
+      email: null,
+      password: null,
+      errors: {
+        name: null,
+        email: null,
+        password: null,
+        message: null
+      },
+      sending: false,
+      success: false
     }
   },
   methods: {
-    handleSubmit(event){
+    async handleSubmit(event){
       event.preventDefault()
 
       this.submited = true
 
       const { name, email, password } = this
 
-      this.submited = false
+      try {
+        const response = await api.post('/admin/user', { name, email, password })
+
+        // reset
+        this.name = null
+        this.email = null
+        this.password = null
+
+        this.success = true
+        this.errors = {
+          name: null,
+          email: null,
+          password: null,
+          message: null
+        }
+
+      } catch (error) {
+        const { data, status } = error.response
+
+        if(status === 400) {
+          this.errors[data.field] = data.message
+        } else {
+          this.errors['message'] = data.message
+        }
+      } finally {
+        this.sending = false
+      }
     }
   }
 }
