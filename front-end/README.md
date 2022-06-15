@@ -1,24 +1,30 @@
-# front-end
+## Crud VueJS
+#### Aplicação front-end para gerenciamento de usuários e tarefas.
 
-## Project setup
-```
-yarn install
+#### OBS: É importante seguir todos os passos na mesma ordem, estou supondo que você esteja utilizando sistema operacional Linux.
+
+## Requisitos: NodeJS, Yarn.
+
+### Instruções para rodar o projeto:
+
+1 - Clonando o repositório:
+```zsh
+git clone https://github.com/Th3Ang3lo/crud-vue-laravel.git
 ```
 
-### Compiles and hot-reloads for development
+2 - Mude para o diretório do front-end
+```zsh
+cd crud-vue-laravel/front-end
 ```
+
+3 - Instalando dependências do yarn
+```zsh
+yarn
+```
+
+4 - Rodando o servidor web:
+```zsh
 yarn serve
 ```
 
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+5 - Acessando o projeto: abra o navegador na URL: http://localhost:8080
