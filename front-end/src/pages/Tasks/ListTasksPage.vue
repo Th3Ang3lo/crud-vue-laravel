@@ -63,7 +63,7 @@
         <template #cell(action)="data">
           <b-button
             variant="warning"
-            @click="$router.push(routes.EDIT_USER.path.replace(':id', data.value.id))"
+            @click="$router.push(routes.EDIT_TASK.path.replace(':id', data.value.id))"
           >
             <i class="fa-solid fa-pen" />
           </b-button>
