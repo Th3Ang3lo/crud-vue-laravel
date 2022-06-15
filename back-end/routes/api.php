@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\Users\DeleteUserController as AdminDeleteUserCont
 use App\Http\Controllers\Admin\Users\ListUsersController as AdminListUsersController;
 
 use App\Http\Controllers\Admin\Tasks\CreateTaskController as AdminCreateTaskController;
+use App\Http\Controllers\Admin\Tasks\UpdateTaskController as AdminUpdateTaskController;
 
 Route::post('/admin/auth', [AdminAuthController::class, 'handle']);
 Route::middleware('jwt.admin')->post('/admin/user', [AdminCreateUserController::class, 'handle']);
@@ -29,3 +30,4 @@ Route::middleware('jwt.admin')->delete('/admin/user/{id}', [AdminDeleteUserContr
 Route::middleware('jwt.admin')->get('/admin/user/list', [AdminListUsersController::class, 'handle']);
 
 Route::middleware('jwt.admin')->post('/admin/task', [AdminCreateTaskController::class, 'handle']);
+Route::middleware('jwt.admin')->put('/admin/task/{id}', [AdminUpdateTaskController::class, 'handle']);
