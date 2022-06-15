@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\Users\ListUsersController as AdminListUsersContro
 use App\Http\Controllers\Admin\Tasks\CreateTaskController as AdminCreateTaskController;
 use App\Http\Controllers\Admin\Tasks\UpdateTaskController as AdminUpdateTaskController;
 use App\Http\Controllers\Admin\Tasks\DeleteTaskController as AdminDeleteTaskController;
+use App\Http\Controllers\Admin\Tasks\ListTasksController as AdminListTasksController;
 
 Route::post('/admin/auth', [AdminAuthController::class, 'handle']);
 Route::middleware('jwt.admin')->post('/admin/user', [AdminCreateUserController::class, 'handle']);
@@ -33,3 +34,4 @@ Route::middleware('jwt.admin')->get('/admin/user/list', [AdminListUsersControlle
 Route::middleware('jwt.admin')->post('/admin/task', [AdminCreateTaskController::class, 'handle']);
 Route::middleware('jwt.admin')->put('/admin/task/{id}', [AdminUpdateTaskController::class, 'handle']);
 Route::middleware('jwt.admin')->delete('/admin/task/{id}', [AdminDeleteTaskController::class, 'handle']);
+Route::middleware('jwt.admin')->get('/admin/task/list', [AdminListTasksController::class, 'handle']);
